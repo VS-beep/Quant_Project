@@ -83,6 +83,11 @@ def optimize_portfolio(data, target_return=None):
     def negative_sharpe_ratio(weights):
         portfolio_return = (1 + np.sum(mean_returns * weights)) ** 252 - 1
         portfolio_vol = portfolio_volatility(weights)
+        
+        # Prevent division by zero
+        if portfolio_vol <= 0.0001:
+            return 1e10  # Return large number for optimization
+        
         return -(portfolio_return - 0.02) / portfolio_vol
 
     constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
@@ -111,7 +116,7 @@ def plot_portfolio_allocation(weights, tickers):
     fig = px.pie(
         values=weights,
         names=tickers,
-        title='💰 Portfolio Allocation',
+        title='Portfolio Allocation',
         color_discrete_sequence=colors[:len(tickers)]
     )
 
@@ -167,7 +172,7 @@ def plot_portfolio_performance(portfolio_returns, benchmark_returns=None):
         ))
 
     fig.update_layout(
-        title='📈 Portfolio Performance',
+        title='Portfolio Performance',
         xaxis_title='Date',
         yaxis_title='Cumulative Returns',
         paper_bgcolor='#0d1a0d',

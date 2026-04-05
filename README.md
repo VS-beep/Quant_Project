@@ -4,27 +4,27 @@ A comprehensive Streamlit-based dashboard for quantitative finance analysis, fea
 
 ## Features
 
-### 📊 Stock Analysis
+### Stock Analysis
 
 - Real-time stock data fetching using Yahoo Finance
 - Technical indicators (Moving Averages, RSI, MACD)
 - Interactive candlestick charts with volume
 - Key financial metrics and company information
 
-### 💼 Portfolio Management
+### Portfolio Management
 
 - Multi-asset portfolio analysis
 - Portfolio optimization (Maximum Sharpe Ratio)
 - Performance metrics (Return, Volatility, Sharpe Ratio, Max Drawdown)
 - Interactive allocation charts and performance visualization
 
-### 🔬 Financial Modeling
+### Financial Modeling
 
 - **DCF Valuation**: Discounted Cash Flow analysis for stock valuation
 - **Black-Scholes Options**: European call/put option pricing
 - **Monte Carlo Simulation**: Stock price simulation with risk analysis
 
-### ⚠️ Risk Assessment
+### Risk Assessment
 
 - Value at Risk (VaR) calculations using multiple methods:
   - Historical VaR

@@ -43,7 +43,13 @@ def calculate_expected_shortfall(returns, confidence_level=0.95):
     """Calculate Expected Shortfall (Conditional VaR - average loss beyond VaR)."""
     try:
         var_threshold = np.percentile(returns, (1 - confidence_level) * 100)
-        es = returns[returns <= var_threshold].mean()
+        tail_returns = returns[returns <= var_threshold]
+        
+        # Handle case with no tail returns
+        if len(tail_returns) == 0:
+            return None
+        
+        es = tail_returns.mean()
         return -es  # Return positive value for consistency with VaR
     except Exception as e:
         st.error(f"Error calculating Expected Shortfall: {str(e)}")
@@ -64,7 +70,13 @@ def calculate_sharpe_ratio(returns, risk_free_rate=0.02):
     """Calculate Sharpe ratio."""
     try:
         excess_returns = returns - risk_free_rate / 252  # Assuming daily returns
-        sharpe = excess_returns.mean() / excess_returns.std() * np.sqrt(252)
+        denominator = excess_returns.std()
+        
+        # Handle case with zero volatility
+        if denominator == 0:
+            return None
+        
+        sharpe = excess_returns.mean() / denominator * np.sqrt(252)
         return sharpe
     except Exception as e:
         st.error(f"Error calculating Sharpe ratio: {str(e)}")
@@ -75,6 +87,11 @@ def calculate_sortino_ratio(returns, risk_free_rate=0.02):
     try:
         excess_returns = returns - risk_free_rate / 252
         downside_returns = excess_returns[excess_returns < 0]
+        
+        # Handle case with no downside returns
+        if len(downside_returns) == 0 or downside_returns.std() == 0:
+            return None
+        
         sortino = excess_returns.mean() / downside_returns.std() * np.sqrt(252)
         return sortino
     except Exception as e:
@@ -137,7 +154,7 @@ def plot_risk_metrics(returns):
         )
 
     fig.update_layout(
-        title='⚠️ Returns Distribution with VaR Levels',
+        title='Returns Distribution with VaR Levels',
         xaxis_title='Returns',
         yaxis_title='Frequency',
         paper_bgcolor='#0d1a0d',
@@ -184,7 +201,7 @@ def plot_correlation_heatmap(corr_matrix):
             [1.0, '#22c55e']   # Green for positive correlation
         ],
         range_color=[-1, 1],
-        title="📊 Asset Correlation Matrix"
+        title="Asset Correlation Matrix"
     )
 
     fig.update_layout(

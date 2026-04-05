@@ -13,6 +13,10 @@ def dcf_valuation(free_cash_flows, discount_rate, terminal_growth_rate, shares_o
 
         if discount_rate <= 0 or terminal_growth_rate >= discount_rate or terminal_growth_rate < 0:
             raise ValueError("Invalid discount or growth rates")
+        
+        # Additional check to prevent division by zero or near-zero denominator
+        if abs(discount_rate - terminal_growth_rate) < 0.0001:
+            raise ValueError("Discount rate and terminal growth rate are too close (separation must be > 0.01%)")
 
         # Calculate present value of free cash flows
         pv_fcfs = [fcf / (1 + discount_rate) ** (i + 1) for i, fcf in enumerate(free_cash_flows)]
@@ -122,7 +126,7 @@ def plot_monte_carlo(simulations, S):
     )
 
     fig.update_layout(
-        title=f'🎲 Monte Carlo Simulation (Starting Price: ${S})',
+        title=f'Monte Carlo Simulation (Starting Price: ${S})',
         xaxis_title='Time Steps',
         yaxis_title='Price ($)',
         paper_bgcolor='#F1F8E9',
@@ -152,19 +156,19 @@ def plot_monte_carlo(simulations, S):
     return fig
 
 def calculate_var(returns, confidence_level=0.95):
-    """Calculate Value at Risk (VaR)."""
+    """Calculate Value at Risk (VaR) - returns positive loss magnitude."""
     try:
-        var = np.percentile(returns, (1 - confidence_level) * 100)
+        var = -np.percentile(returns, (1 - confidence_level) * 100)
         return var
     except Exception as e:
         st.error(f"Error calculating VaR: {str(e)}")
         return None
 
 def calculate_cvar(returns, confidence_level=0.95):
-    """Calculate Conditional Value at Risk (CVaR)."""
+    """Calculate Conditional Value at Risk (CVaR) - returns positive loss magnitude."""
     try:
-        var = calculate_var(returns, confidence_level)
-        cvar = returns[returns <= var].mean()
+        var_threshold = np.percentile(returns, (1 - confidence_level) * 100)
+        cvar = -returns[returns <= var_threshold].mean()
         return cvar
     except Exception as e:
         st.error(f"Error calculating CVaR: {str(e)}")

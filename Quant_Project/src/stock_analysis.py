@@ -112,7 +112,7 @@ def plot_stock_chart(data, ticker):
     # Enhanced layout with dark theme
     fig.update_layout(
         title=dict(
-            text=f'📈 {ticker} Stock Analysis',
+            text=f'{ticker} Stock Analysis',
             font=dict(size=20, color='#22c55e'),
             x=0.5
         ),
