@@ -156,7 +156,7 @@ def build_lstm_model(lookback, units=64, dropout_rate=0.25, l2_reg=0.001):
     
     return model
 
-def train_lstm_model(model, X_train, y_train, X_validate, y_validate, epochs=150, batch_size=32, progress_callback=None):
+def train_lstm_model(model, X_train, y_train, X_validate, y_validate, epochs=300, batch_size=32, progress_callback=None):
     """
     Train LSTM model with advanced callbacks:
     - Early stopping with patience
