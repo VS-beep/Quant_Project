@@ -1029,7 +1029,7 @@ def lstm_prediction_page():
             st.info("Training model with adaptive learning rate...")
             
             # Create a variable to track latest epoch info
-            epoch_info = {"current": 0, "total": 300}
+            epoch_info = {"current": 0, "total": 250}
             
             def update_epoch_display(current_epoch, total_epochs, logs):
                 """Callback to update epoch progress in UI."""
@@ -1060,7 +1060,7 @@ def lstm_prediction_page():
                     """, unsafe_allow_html=True)
         
             model, history = train_lstm_model(model, X_train, y_train, X_validate, y_validate, 
-                                             epochs=300, batch_size=32, progress_callback=update_epoch_display)
+                                             epochs=250, batch_size=32, progress_callback=update_epoch_display)
             
             # Update loading status
             with loading_placeholder.container():
