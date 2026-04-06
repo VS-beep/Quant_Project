@@ -44,7 +44,7 @@ def validate_data_quality(data, ticker):
     
     # Check for missing values
     if np.isnan(data).any():
-        st.warning(f"⚠️ Detected {np.isnan(data).sum()} NaN values. Filling with forward-fill method...")
+        st.warning(f"Detected {np.isnan(data).sum()} NaN values. Filling with forward-fill method...")
         data = pd.DataFrame(data).fillna(method='ffill').values
     
     # Check for minimum data points
@@ -59,7 +59,7 @@ def validate_data_quality(data, ticker):
     outlier_count = outlier_mask.sum()
     
     if outlier_count > 0:
-        st.warning(f"⚠️ Detected {outlier_count} extreme outliers. These may affect model performance.")
+        st.warning(f"Detected {outlier_count} extreme outliers. These may affect model performance.")
     
     return data
 
@@ -371,7 +371,7 @@ def plot_lstm_training_history(history):
     fig.update_yaxes(title_text="MAE", row=1, col=2)
     
     fig.update_layout(
-        title='📊 Advanced Model Training Dynamics',
+        title='Advanced Model Training Dynamics',
         paper_bgcolor='#0d1a0d',
         plot_bgcolor='#0a0a0a',
         font=dict(family="Inter, sans-serif", size=12, color='#c7e9c0'),
@@ -507,7 +507,7 @@ def plot_predictions(actual_prices, train_pred, validate_pred, test_pred, future
     
     # Update layout
     fig.update_layout(
-        title='🔮 LSTM Stock Price Prediction with Uncertainty Quantification',
+        title='LSTM Stock Price Prediction with Uncertainty Quantification',
         paper_bgcolor='#0d1a0d',
         plot_bgcolor='#0a0a0a',
         font=dict(family="Inter, sans-serif", size=12, color='#c7e9c0'),
@@ -600,7 +600,7 @@ def plot_model_metrics(metrics):
     ), row=1, col=3)
     
     fig.update_layout(
-        title='📊 Model Performance Metrics',
+        title='Model Performance Metrics',
         paper_bgcolor='#0d1a0d',
         plot_bgcolor='#0a0a0a',
         font=dict(family="Inter, sans-serif", size=11, color='#c7e9c0'),

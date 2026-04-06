@@ -17,7 +17,7 @@ from utils import *
 # Page configuration
 st.set_page_config(
     page_title="Quantitative Finance Dashboard",
-    page_icon="📈",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -771,12 +771,12 @@ def risk_assessment_page(start_date, end_date):
                 """)
 
             # Calculate VaR using three methods
-            var_95_hist = -calculate_historical_var(portfolio_returns, 0.95)
-            var_99_hist = -calculate_historical_var(portfolio_returns, 0.99)
-            var_95_param = -calculate_parametric_var(portfolio_returns, 0.95)
-            var_99_param = -calculate_parametric_var(portfolio_returns, 0.99)
-            var_95_mc = -calculate_monte_carlo_var(portfolio_returns, 0.95)
-            var_99_mc = -calculate_monte_carlo_var(portfolio_returns, 0.99)
+            var_95_hist = calculate_historical_var(portfolio_returns, 0.95)
+            var_99_hist = calculate_historical_var(portfolio_returns, 0.99)
+            var_95_param = calculate_parametric_var(portfolio_returns, 0.95)
+            var_99_param = calculate_parametric_var(portfolio_returns, 0.99)
+            var_95_mc = calculate_monte_carlo_var(portfolio_returns, 0.95)
+            var_99_mc = calculate_monte_carlo_var(portfolio_returns, 0.99)
 
             # Display VaR results
             st.markdown("### Confidence Level: 95%")
@@ -875,9 +875,9 @@ def risk_assessment_page(start_date, end_date):
                     - **High positive correlations:** Less diversification benefit
                     
                     **Color Coding:**
-                    - 🟢 Green: Positive correlation (assets move together)
-                    - ⚪ White: No correlation
-                    - 🔴 Red: Negative correlation (assets move opposite - better for diversification)
+                    - Green: Positive correlation (assets move together)
+                    - White: No correlation
+                    - Red: Negative correlation (assets move opposite - better for diversification)
                     """)
                 
                 corr_matrix = calculate_correlation_matrix(data)
@@ -1029,7 +1029,7 @@ def lstm_prediction_page():
             st.info("Training model with adaptive learning rate...")
             
             # Create a variable to track latest epoch info
-            epoch_info = {"current": 0, "total": 150}
+            epoch_info = {"current": 0, "total": 300}
             
             def update_epoch_display(current_epoch, total_epochs, logs):
                 """Callback to update epoch progress in UI."""
@@ -1060,7 +1060,7 @@ def lstm_prediction_page():
                     """, unsafe_allow_html=True)
             
             model, history = train_lstm_model(model, X_train, y_train, X_validate, y_validate, 
-                                             epochs=150, batch_size=32, progress_callback=update_epoch_display)
+                                             epochs=300, batch_size=32, progress_callback=update_epoch_display)
             
             # Update loading status
             with loading_placeholder.container():
@@ -1240,7 +1240,7 @@ def lstm_prediction_page():
         
         # Forecast summary
         st.markdown("---")
-        st.subheader("📈 Forecast Summary with Uncertainty Quantification")
+        st.subheader("Forecast Summary with Uncertainty Quantification")
         
         current_price = st.session_state.lstm_raw_data[-1][0]
         forecast_end_price = st.session_state.lstm_future_mean[-1]
@@ -1268,7 +1268,7 @@ def lstm_prediction_page():
                      help="1 standard deviation relative to forecast")
         
         # Forecast table with confidence bands
-        with st.expander("📋 View Detailed Forecast with Confidence Intervals"):
+        with st.expander("View Detailed Forecast with Confidence Intervals"):
             forecast_data = pd.DataFrame({
                 'Day': range(1, len(st.session_state.lstm_future_mean) + 1),
                 'Mean Forecast': st.session_state.lstm_future_mean,
@@ -1280,7 +1280,7 @@ def lstm_prediction_page():
             st.dataframe(forecast_data, use_container_width=True)
         
         # Model information
-        with st.expander("ℹ️ Model Architecture & Training Details"):
+        with st.expander("Model Architecture & Training Details"):
             st.markdown(f"""
             ### Model Specifications
             - **Architecture:** Bidirectional LSTM with Batch Normalization
@@ -1302,21 +1302,21 @@ def lstm_prediction_page():
             - **Ensemble Size:** 100 forward passes
             
             ### Model Robustness Features
-            ✅ Bidirectional processing of sequences
-            ✅ Batch normalization for training stability
-            ✅ Multiple dense layers for feature extraction
-            ✅ Adaptive learning rate scheduling
-            ✅ Built-in regularization (L2 + Dropout)
-            ✅ 3-way data split (train/validate/test)
-            ✅ Residual analysis for error assessment
-            ✅ Directional accuracy metrics
-            ✅ Monte Carlo uncertainty quantification
+            • Bidirectional processing of sequences
+            • Batch normalization for training stability
+            • Multiple dense layers for feature extraction
+            • Adaptive learning rate scheduling
+            • Built-in regularization (L2 + Dropout)
+            • 3-way data split (train/validate/test)
+            • Residual analysis for error assessment
+            • Directional accuracy metrics
+            • Monte Carlo uncertainty quantification
             """)
         
         # Disclaimer
         st.markdown("""
         ---
-        ### ⚠️ Critical Disclaimer
+        ### Critical Disclaimer
         
         **This is a research/educational model - NOT financial advice:**
         
